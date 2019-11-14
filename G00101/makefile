@@ -1,8 +1,8 @@
-object = test runningopt
+object = client runningopt
 headFiles = runningopt.h
-cFiles = test.c  runningopt.c
+cFiles = client.c  runningopt.c
 
-test : $(headFiles) $(cFiles)
+client : $(headFiles) $(cFiles)
 
 
 .PHONY : all clean
