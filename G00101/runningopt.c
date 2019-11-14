@@ -4,9 +4,9 @@
 #include "runningopt.h"
 
 
-int optSet(int optc,char *optv[],opt *option)
+int optSet(opt *option,int optc,char *optv[])
 {
-    resetOpt(option);
+    optReset(option);
 
     int i;
     for (i = 1; i < optc; ++i)
@@ -95,7 +95,7 @@ int optSet(int optc,char *optv[],opt *option)
 
 }
 
-int resetOpt(opt *option)
+int optReset(opt *option)
 {
     option->IPAddr=inet_addr("0.0.0.0");
     option->Num=100;

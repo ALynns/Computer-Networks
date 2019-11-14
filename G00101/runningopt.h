@@ -44,10 +44,10 @@ typedef struct opt
 } opt;
 
 //设置默认参数的初始化函数
-int resetOpt(opt *optio);
+int optReset(opt *optio);
 
 //设置参数结构体，前两项分别对应int argc和char* argv[]
-int optSet(int optc,char *optv[],opt *option);
+int optSet(opt *option,int optc,char *optv[]);
 
 //打印结构体的内容测试函数
 int printOpt(opt option);

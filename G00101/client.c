@@ -17,4 +17,5 @@
 int main(int argc ,char *argv[])
 {
     opt option;
+    optSet(&option,argc,argv);
 }
