@@ -1,3 +1,7 @@
+#ifndef __COMPARE_H
+#define __COMPARE_H
+#endif
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
