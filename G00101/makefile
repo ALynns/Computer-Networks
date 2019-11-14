@@ -1,13 +1,20 @@
-object = client runningopt
-headFiles = runningopt.h
-cFiles = client.c  runningopt.c
+targets=client test_compare
 
-client : $(headFiles) $(cFiles)
+objs=runningopt.o compare.o
+headFiles=runningopt.h compare.h
 
+all:$(targets)
 
-.PHONY : all clean
+.PHONY:all clean
 
-all : $(object)
+$(objs):$(headFiles)
+$(targets):$(objs)
 
-clean :
-	-rm -rf $(object)
+$(objs):%.o:%.c
+	gcc -c $<
+
+$(targets):%:%.o
+	gcc -o $@ $< $(objs)
+
+clean:
+	-rm $(targets) *.o
