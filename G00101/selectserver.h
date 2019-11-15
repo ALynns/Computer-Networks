@@ -2,19 +2,15 @@
 #define __SELECTSERVER_H
 #endif
 
-<<<<<<< HEAD
-
 #include "runningopt.h"
 
-=======
->>>>>>> 4d95ba27eb9c253c696af58e240244f1462151c0
-//×î´óÁ¬½ÓÊı
+//æœ€å¤§è¿æ¥æ•°
 #define MAXCONNECTIONNUM 1000
 
-/*´æ´¢acceptËùµÃµÄ¿Í»§¶ËĞÅÏ¢
-    int client_socket;¿Í»§¶ËÌ×½Ó×Ö
-    struct sockaddr_in client_addr;¿Í»§¶ËĞÅÏ¢
-    int addr_size;¿Í»§¶Ë³¤¶È
+/*å­˜å‚¨acceptæ‰€å¾—çš„å®¢æˆ·ç«¯ä¿¡æ¯
+    int client_socket;å®¢æˆ·ç«¯å¥—æ¥å­—
+    struct sockaddr_in client_addr;å®¢æˆ·ç«¯ä¿¡æ¯
+    int addr_size;å®¢æˆ·ç«¯é•¿åº¦
 */
 typedef struct client_info
 {
@@ -23,12 +19,12 @@ typedef struct client_info
     int addr_size;
 } client_info;
 
-/*´æ´¢selectËùĞèµÄĞÅÏ¢
-    fd_set fdsr;ÃèÊö·û¼¯
-    int fdMaxnumµ±Ç°×î´óÃèÊö·ûÁ¬½ÓÁ¿
-    int fdNum;ÃèÊö·ûÊıÁ¿
-    int maxfds;µ±Ç°×î´óÃèÊö·û
-    int fds[MAXCONNECTIONNUM];ÃèÊö·ûÊı×é
+/*å­˜å‚¨selectæ‰€éœ€çš„ä¿¡æ¯
+    fd_set fdsr;æè¿°ç¬¦é›†
+    int fdMaxnumå½“å‰æœ€å¤§æè¿°ç¬¦è¿æ¥é‡
+    int fdNum;æè¿°ç¬¦æ•°é‡
+    int maxfds;å½“å‰æœ€å¤§æè¿°ç¬¦
+    int fds[MAXCONNECTIONNUM];æè¿°ç¬¦æ•°ç»„
 */
 typedef struct fdset
 {
@@ -43,13 +39,13 @@ int clientConnect(opt option);
 int dataRecv(fdset *fdst);
 int dataSend(fdset *fdst);
 
-//fdset³õÊ¼»¯£¬º¯Êı×î¿ªÊ¼Ê±µ÷ÓÃÒ»´Î
+//fdsetåˆå§‹åŒ–ï¼Œå‡½æ•°æœ€å¼€å§‹æ—¶è°ƒç”¨ä¸€æ¬¡
 int fdsetReset(fdset *fdst);
 
-//Ã¿´Îµ÷ÓÃselectÇ°³õÊ¼»¯fdsr£¬Ã¿´Îµ÷ÓÃselectÇ°µ÷ÓÃÒ»´Î
+//æ¯æ¬¡è°ƒç”¨selectå‰åˆå§‹åŒ–fdsrï¼Œæ¯æ¬¡è°ƒç”¨selectå‰è°ƒç”¨ä¸€æ¬¡
 int fdsetZeroSet(fdset *fdst);
 
-//Ìí¼ÓÒ»¸öĞÂµÄÃèÊö·û½øÈëfdsetÖĞ
+//æ·»åŠ ä¸€ä¸ªæ–°çš„æè¿°ç¬¦è¿›å…¥fdsetä¸­
 int fdsetUpdate(fdset *fdst,int socketfd);
 
 //
