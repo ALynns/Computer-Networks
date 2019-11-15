@@ -7,16 +7,34 @@
 //最大连接数
 #define MAXCONNECTIONNUM 1000
 
+//客户端信息状态：未发送需求信息，已发送需求信息未接收需求数据，已接收需求数据
+typedef enum ClientStatus
+{
+    CS_NOSDNORECV,
+    CS_SDNORECV,
+    CS_SDRECV
+}ClientStatus;
+
 /*存储accept所得的客户端信息
     int client_socket;客户端套接字
     struct sockaddr_in client_addr;客户端信息
     int addr_size;客户端长度
+    int stuNo;是否发送学号：0未发送未接收
+    int pid;
+    int time;
+    int str;
+    int strLength;
 */
 typedef struct client_info
 {
     int client_socket;
     struct sockaddr_in client_addr;
     int addr_size;
+    int stuNo;
+    int pid;
+    int time;
+    int str;
+    int strLength;
 } client_info;
 
 /*存储select所需的信息
