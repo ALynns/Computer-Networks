@@ -3,8 +3,11 @@
 #endif
 
 //≥Ã–Ú¿‡–Õ
+<<<<<<< HEAD
 #ifndef __Types_defined
 #define __Types_defined
+=======
+>>>>>>> 4d95ba27eb9c253c696af58e240244f1462151c0
 typedef enum ProcType
 {
     PT_SERVER,

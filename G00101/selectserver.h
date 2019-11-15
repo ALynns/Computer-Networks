@@ -2,9 +2,12 @@
 #define __SELECTSERVER_H
 #endif
 
+<<<<<<< HEAD
 
 #include "runningopt.h"
 
+=======
+>>>>>>> 4d95ba27eb9c253c696af58e240244f1462151c0
 //最大连接数
 #define MAXCONNECTIONNUM 1000
 
