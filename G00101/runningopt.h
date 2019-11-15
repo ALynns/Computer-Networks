@@ -6,28 +6,28 @@
 #ifndef __Types_defined
 #define __Types_defined
 
-//ç¨‹åºç±»å‹
+//³ÌĞòÀàĞÍ
 typedef enum ProcType
 {
     PT_SERVER,
     PT_CLIENT
 }ProcType;
 
-//æ˜¯å¦é˜»å¡
+//ÊÇ·ñ×èÈû
 typedef enum BlockType
 {
     BT_BLOCK,
     BT_NONBLOCK
 } BlockType;
 
-//æ˜¯å¦åˆ†è£‚å­è¿›ç¨‹æ–¹æ³•è¿æ¥
+//ÊÇ·ñ·ÖÁÑ×Ó½ø³Ì·½·¨Á¬½Ó
 typedef enum ForkType
 {
     FT_FORK,
     FT_NOFORK
 } ForkType;
 
-//é˜»å¡çš„å‡½æ•°
+//×èÈûµÄº¯Êı
 typedef enum BlockFuncType
 {
     BFT_SELECT,
@@ -36,15 +36,15 @@ typedef enum BlockFuncType
 }BlockFuncType;
 
 /*
-å‚¨å­˜å‚æ•°çš„ç»“æ„ä½“ï¼Œå†…å®¹åŒ…æ‹¬ï¼š
-    ProcType Proc_Type;å½“å‰ç¨‹åºçš„ç±»å‹ï¼šæœåŠ¡ç«¯/å®¢æˆ·ç«¯
-    unsigned long IPAddr;æ— ç¬¦å·æ•´å½¢å½¢å¼çš„IPåœ°å€
-    int Port;ç«¯å£å·
-    BlockType Block_Type;æ˜¯å¦é˜»å¡
-    ForkType Fork_Type;æ˜¯å¦åˆ†è£‚å­è¿›ç¨‹æ–¹æ³•è¿æ¥
-    BlockFuncType BlockFunc_Type;é˜»å¡çš„å‡½æ•°
-    int Num;è¿æ¥æ•°
-    int socket;æœ¬åœ°å¥—æ¥å­—
+´¢´æ²ÎÊıµÄ½á¹¹Ìå£¬ÄÚÈİ°üÀ¨£º
+    ProcType Proc_Type;µ±Ç°³ÌĞòµÄÀàĞÍ£º·şÎñ¶Ë/¿Í»§¶Ë
+    unsigned long IPAddr;ÎŞ·ûºÅÕûĞÎĞÎÊ½µÄIPµØÖ·
+    int Port;¶Ë¿ÚºÅ
+    BlockType Block_Type;ÊÇ·ñ×èÈû
+    ForkType Fork_Type;ÊÇ·ñ·ÖÁÑ×Ó½ø³Ì·½·¨Á¬½Ó
+    BlockFuncType BlockFunc_Type;×èÈûµÄº¯Êı
+    int Num;Á¬½ÓÊı
+    int socket;±¾µØÌ×½Ó×Ö
 */
 typedef struct opt
 {
@@ -59,16 +59,17 @@ typedef struct opt
 } opt;
 
 #endif
-//è®¾ç½®é»˜è®¤å‚æ•°çš„åˆå§‹åŒ–å‡½æ•°
+
+//ÉèÖÃÄ¬ÈÏ²ÎÊıµÄ³õÊ¼»¯º¯Êı
 int optReset(opt *optio);
 
-//è®¾ç½®å‚æ•°ç»“æ„ä½“ï¼Œå‰ä¸¤é¡¹åˆ†åˆ«å¯¹åº”int argcå’Œchar* argv[]
+//ÉèÖÃ²ÎÊı½á¹¹Ìå£¬Ç°Á½Ïî·Ö±ğ¶ÔÓ¦int argcºÍchar* argv[]
 int optSet(opt *option,int optc,char *optv[],ProcType procType);
 
-//è®¾ç½®æœ¬åœ°å¥—æ¥å­—
+//ÉèÖÃ±¾µØÌ×½Ó×Ö
 int optSocketSet(opt *option, int socket);
 
-//æ‰“å°ç»“æ„ä½“çš„å†…å®¹æµ‹è¯•å‡½æ•°
+//´òÓ¡½á¹¹ÌåµÄÄÚÈİ²âÊÔº¯Êı
 int printOpt(opt option);
 
 
