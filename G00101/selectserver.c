@@ -28,6 +28,8 @@ int clientConnect(opt option)
 
     while(1)
     {
+        dataSend(&fds, client);
+        dataRecv(&fds, client);
         FD_ZERO(&serverfdsr);
         FD_SET(option.Socketfd, &serverfdsr);
         ret = select(option.Socketfd + 1, &serverfdsr, NULL, NULL, 0);
@@ -41,17 +43,36 @@ int clientConnect(opt option)
             if (errno == EINTR && ret < 0)
                 continue;
         }
+
+        if (ret > 0)
+        {
+            client[fds.fdNum]=(client_info*)malloc(sizeof(client_info));
+            client[fds.fdNum]->client_socket=accept(option.Socketfd, (struct sockaddr *)&client[fds.fdNum]->client_addr, &client[fds.fdNum]->addr_size);
+            if (client[fds.fdNum]->client_socket > 0)
+            {
+                fcntl(client[fds.fdNum]->client_socket, F_SETFL, fcntl(client[fds.fdNum]->client_socket, F_GETFL, 0) | O_NONBLOCK);
+                fdsetUpdate(&fds, client[fds.fdNum]->client_socket);
+            }
+        }
         fdsetZeroSet(&fds);
     }
 }
 
-int dataRecv(fdset *fdst)
+int dataRecv(fdset *fdst, client_info *clientSet[])
 {
     if (fdst->fdNum == 0)
         return 0;
+    int i;
+    while(1)
+    {
+        for (i = 0; i < fdst->fdMaxNum; i++)
+        {
+        }
+    }
+    
 }
 
-int dataSend(fdset *fdst)
+int dataSend(fdset *fdst, client_info *clientSet[])
 {
     if (fdst->fdNum == 0)
         return 0;

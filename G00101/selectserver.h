@@ -55,8 +55,8 @@ typedef struct fdset
 }fdset;
 
 int clientConnect(opt option);
-int dataRecv(fdset *fdst);
-int dataSend(fdset *fdst);
+int dataRecv(fdset *fdst, client_info *clientSet[]);
+int dataSend(fdset *fdst, client_info *clientSet[]);
 
 //fdset初始化，函数最开始时调用一次
 int fdsetReset(fdset *fdst);
