@@ -17,5 +17,5 @@
 int main(int argc ,char *argv[])
 {
     opt option;
-    optSet(&option,argc,argv);//获取命令参数
+    optSet(&option,argc,argv,PT_CLIENT);//获取命令参数
 }
