@@ -6,26 +6,41 @@
 #include <netinet/in.h>
 #include <sys/ioctl.h>
 #include <sys/fcntl.h>
-#include <time.h>
+#include <sys/time.h>
 #include <arpa/inet.h>
 #include <signal.h>
 #include <ifaddrs.h>
 #include <stddef.h>
+#include <sys/errno.h>
 
 #include "selectserver.h"
 #include "runningopt.h"
 
 int clientConnect(opt option)
 {
-    client_info *client[MAXCONNECTIONNUM];
-    fdset fds;
     int ret;
 
-    fdsetZeroSet(&fds);
+    fd_set serverfdsr;
+
+    client_info *client[MAXCONNECTIONNUM];
+    fdset fds;
+    fdsetReset(&fds);
 
     while(1)
     {
-
+        FD_ZERO(&serverfdsr);
+        FD_SET(option.Socketfd, &serverfdsr);
+        ret = select(option.Socketfd + 1, &serverfdsr, NULL, NULL, 0);
+        if (ret < 0 && errno != EINTR)
+        {
+            printf("select error\n");
+            exit(-1);
+        }
+        else
+        {
+            if (errno == EINTR && ret < 0)
+                continue;
+        }
         fdsetZeroSet(&fds);
     }
 }
@@ -101,6 +116,6 @@ int fdsetClose(fdset *fdst, int socketfd)
             continue;
         }
     }
-
+    return 0;
     
 }
