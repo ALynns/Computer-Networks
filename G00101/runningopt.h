@@ -1,8 +1,13 @@
-#ifndef __RUNNIGOPT_H
+#ifndef __RUNNINGOPT_H
 #define __RUNNINGOPT_H
 #endif
 
 //程序类型
+<<<<<<< HEAD
+#ifndef __Types_defined
+#define __Types_defined
+=======
+>>>>>>> 4d95ba27eb9c253c696af58e240244f1462151c0
 typedef enum ProcType
 {
     PT_SERVER,
@@ -54,6 +59,7 @@ typedef struct opt
     int Socketfd;
 } opt;
 
+#endif
 //设置默认参数的初始化函数
 int optReset(opt *optio);
 
