@@ -4,10 +4,10 @@
 
 #include "runningopt.h"
 
-//æœ€å¤§è¿æ¥æ•°
+//×î´óÁ¬½ÓÊı
 #define MAXCONNECTIONNUM 1000
 
-//å®¢æˆ·ç«¯ä¿¡æ¯çŠ¶æ€ï¼šæœªå‘é€éœ€æ±‚ä¿¡æ¯ï¼Œå·²å‘é€éœ€æ±‚ä¿¡æ¯æœªæ¥æ”¶éœ€æ±‚æ•°æ®ï¼Œå·²æ¥æ”¶éœ€æ±‚æ•°æ®
+//¿Í»§¶ËĞÅÏ¢×´Ì¬£ºÎ´·¢ËÍĞèÇóĞÅÏ¢£¬ÒÑ·¢ËÍĞèÇóĞÅÏ¢Î´½ÓÊÕĞèÇóÊı¾İ£¬ÒÑ½ÓÊÕĞèÇóÊı¾İ
 typedef enum ClientStatus
 {
     CS_NOSDNORECV,
@@ -15,11 +15,11 @@ typedef enum ClientStatus
     CS_SDRECV
 }ClientStatus;
 
-/*å­˜å‚¨acceptæ‰€å¾—çš„å®¢æˆ·ç«¯ä¿¡æ¯
-    int client_socket;å®¢æˆ·ç«¯å¥—æ¥å­—
-    struct sockaddr_in client_addr;å®¢æˆ·ç«¯ä¿¡æ¯
-    int addr_size;å®¢æˆ·ç«¯é•¿åº¦
-    int stuNo;æ˜¯å¦å‘é€å­¦å·ï¼š0æœªå‘é€æœªæ¥æ”¶
+/*´æ´¢acceptËùµÃµÄ¿Í»§¶ËĞÅÏ¢
+    int client_socket;¿Í»§¶ËÌ×½Ó×Ö
+    struct sockaddr_in client_addr;¿Í»§¶ËĞÅÏ¢
+    int addr_size;¿Í»§¶Ë³¤¶È
+    int stuNo;ÊÇ·ñ·¢ËÍÑ§ºÅ£º0Î´·¢ËÍÎ´½ÓÊÕ
     int pid;
     int time;
     int str;
@@ -30,19 +30,20 @@ typedef struct client_info
     int client_socket;
     struct sockaddr_in client_addr;
     int addr_size;
-    int stuNo;
-    int pid;
-    int time;
-    int str;
-    int strLength;
+    ClientStatus stuNo;
+    ClientStatus pid;
+    ClientStatus time;
+    ClientStatus str;
+    ClientStatus strLength;
+    ClientStatus endInfo;
 } client_info;
 
-/*å­˜å‚¨selectæ‰€éœ€çš„ä¿¡æ¯
-    fd_set fdsr;æè¿°ç¬¦é›†
-    int fdMaxnumå½“å‰æœ€å¤§æè¿°ç¬¦è¿æ¥é‡
-    int fdNum;æè¿°ç¬¦æ•°é‡
-    int maxfds;å½“å‰æœ€å¤§æè¿°ç¬¦
-    int fds[MAXCONNECTIONNUM];æè¿°ç¬¦æ•°ç»„
+/*´æ´¢selectËùĞèµÄĞÅÏ¢
+    fd_set fdsr;ÃèÊö·û¼¯
+    int fdMaxnumµ±Ç°×î´óÃèÊö·ûÁ¬½ÓÁ¿
+    int fdNum;ÃèÊö·ûÊıÁ¿
+    int maxfds;µ±Ç°×î´óÃèÊö·û
+    int fds[MAXCONNECTIONNUM];ÃèÊö·ûÊı×é
 */
 typedef struct fdset
 {
@@ -57,16 +58,16 @@ int clientConnect(opt option);
 int dataRecv(fdset *fdst);
 int dataSend(fdset *fdst);
 
-//fdsetåˆå§‹åŒ–ï¼Œå‡½æ•°æœ€å¼€å§‹æ—¶è°ƒç”¨ä¸€æ¬¡
+//fdset³õÊ¼»¯£¬º¯Êı×î¿ªÊ¼Ê±µ÷ÓÃÒ»´Î
 int fdsetReset(fdset *fdst);
 
-//æ¯æ¬¡è°ƒç”¨selectå‰åˆå§‹åŒ–fdsrï¼Œæ¯æ¬¡è°ƒç”¨selectå‰è°ƒç”¨ä¸€æ¬¡
+//Ã¿´Îµ÷ÓÃselectÇ°³õÊ¼»¯fdsr£¬Ã¿´Îµ÷ÓÃselectÇ°µ÷ÓÃÒ»´Î
 int fdsetZeroSet(fdset *fdst);
 
-//æ·»åŠ ä¸€ä¸ªæ–°çš„æè¿°ç¬¦è¿›å…¥fdsetä¸­
+//Ìí¼ÓÒ»¸öĞÂµÄÃèÊö·û½øÈëfdsetÖĞ
 int fdsetUpdate(fdset *fdst,int socketfd);
 
-//
+//¹Ø±ÕÁ¬½Ó
 int fdsetClose(fdset *fdst, int socketfd);
 
 
