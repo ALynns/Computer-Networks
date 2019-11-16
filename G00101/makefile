@@ -1,7 +1,7 @@
-targets=client test_compare clientBlockFork serverBlockFork
-
-objs=runningopt.o compare.o  savedialog.o tools.o serverbase.o
-headFiles=runningopt.h compare.h  savedialog.h tools.h common.h clientinfo.h serverbase.h
+targets=client test_compare clientBlockFork serverBlockFork clientPoll serverPoll
+ 
+objs=runningopt.o compare.o  savedialog.o tools.o serverbase.o mypoll.o
+headFiles=runningopt.h compare.h  savedialog.h tools.h common.h clientinfo.h serverbase.h mypoll.h
 
 all:$(targets)
 

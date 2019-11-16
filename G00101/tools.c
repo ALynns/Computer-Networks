@@ -2,10 +2,11 @@
 
 int rangerand(int low,int hi)
 {
+
    return rand()%(hi-low+1)+low;
 }
 
-int myitoa(int n,char*s)
+char* myitoa(int n,char*s)
 {
    char temp[10];
    int i,j = 0;
@@ -16,6 +17,7 @@ int myitoa(int n,char*s)
    for(i=j-1;i>=0;i--)
       s[j-1-i]=temp[i];
    s[j]='\0';
+   return s;
 }
 
 void error_exit(char *name)
