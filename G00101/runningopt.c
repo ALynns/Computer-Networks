@@ -4,8 +4,10 @@
 #include "runningopt.h"
 
 
-int optSet(opt *option,int optc,char *optv[])
+int optSet(opt *option,int optc,char *optv[],ProcType procType)
 {
+    option->Proc_Type = procType;
+    
     optReset(option);
 
     int i;
@@ -15,7 +17,8 @@ int optSet(opt *option,int optc,char *optv[])
         {
             if((option->IPAddr=inet_addr(optv[++i]))==INADDR_NONE)
             {
-                option->IPAddr=inet_addr("0.0.0.0");
+                if(option->Proc_Type==PT_SERVER)
+                    option->IPAddr=inet_addr("0.0.0.0");
                 --i;
             }    
             else
@@ -93,6 +96,8 @@ int optSet(opt *option,int optc,char *optv[])
     if(option->Fork_Type==FT_NOFORK&&option->Block_Type==BT_BLOCK)
         option->Block_Type=BT_NONBLOCK;
 
+    return 0;
+
 }
 
 int optReset(opt *option)
@@ -102,6 +107,13 @@ int optReset(opt *option)
     option->Block_Type=BT_NONBLOCK;
     option->Fork_Type=FT_NOFORK;
     option->BlockFunc_Type=BFT_SELECT;
+    return 0;
+}
+
+int optSocketSet(opt *option, int socket)
+{
+    option->Socketfd = socket;
+    return 0;
 }
 
 int printOpt(opt option)
