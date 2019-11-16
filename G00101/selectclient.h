@@ -68,7 +68,7 @@ typedef struct fdset
     int fds[MAXCONNECTIONNUM];
 }fdset;
 
-int serverConnect(opt option);
+int clientConnect(opt option);
 int dataRecv(fdset *fdst, client_info *clientSet[]);
 int dataSend(fdset *fdst, client_info *clientSet[]);
 int dataFileWrite(client_info clientSet, char *str);
