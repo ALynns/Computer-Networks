@@ -111,11 +111,7 @@ int dataRecv(fdset *fdst, client_info *clientSet[])
                 }
                 case CS_SDSTR_RECVNO:
                 {
-                    srand(time(0));
                     clientSet[i]->str = (char *)malloc(clientSet[i]->strLength);
-                    int j;
-                    for(j=0;j<clientSet[i]->strLength;++j)
-                        clientSet[i]->str[j] = rand() % 256;
                     ret = recv(clientSet[i]->client_socket, clientSet[i]->str, clientSet[i]->strLength, 0);
                     clientSet[i]->client_status = CS_SDSTR_RECVSTR;
                     dataFileWrite(*clientSet[i], clientSet[i]->str);
@@ -179,7 +175,7 @@ int dataSend(fdset *fdst, client_info *clientSet[])
                 case CS_SDPID_RECVPID:
                 {
                     ret = send(clientSet[i]->client_socket, "TIME", 5, 0);
-                    clientSet[i]->client_status=CS_SDSTUNO_RECVNO;
+                    clientSet[i]->client_status=CS_SDTIME_RECVNO;
                     break;
                 }
                 case CS_SDTIME_RECVTIME:
@@ -187,7 +183,8 @@ int dataSend(fdset *fdst, client_info *clientSet[])
                     srand(time(0));
                     char buf[9];
                     strcat(buf,"str");
-                    sprintf(&buf[3], "%d", rand() % (99999 - 32768 + 1) + 32768);
+                    clientSet[i]->strLength = rand() % (99999 - 32768 + 1) + 32768;
+                    sprintf(&buf[3], "%d", clientSet[i]->strLength);
                     ret = send(clientSet[i]->client_socket, buf, 9, 0);
                     clientSet[i]->client_status=CS_SDSTR_RECVNO;
                     break;
@@ -216,17 +213,25 @@ int dataSend(fdset *fdst, client_info *clientSet[])
 int dataFileWrite(client_info clientSet, char *str)
 {
     FILE *fp = NULL;
-    char fileName[20];
+    char fileName[20] = {0};
     strcat(fileName,"./txt/");
-    sprintf(&fileName[sizeof(fileName)],"%s",clientSet.StuNo);
+
+    sprintf(&fileName[strlen(fileName)], "%d", ntohl(clientSet.StuNo));
     strcat(fileName, ".");
-    sprintf(&fileName[sizeof(fileName)],"%s",clientSet.pid);
+
+    sprintf(&fileName[strlen(fileName)], "%d", (unsigned int)(ntohl(clientSet.pid) << 16 + clientSet.client_socket));
+
     strcat(fileName, ".pid.txt");
+    printf("%s\n",fileName);
+    
+    fp = fopen(fileName, "w+");
+    fclose(fp);
     fp = fopen(fileName, "a");
     fprintf(fp, "%d\n", ntohl(clientSet.StuNo));
-    fprintf(fp, "%d\n", ntohl(clientSet.pid));
+    fprintf(fp, "%d\n", (ntohl(clientSet.pid) << 16 + clientSet.client_socket));
     fprintf(fp, "%s\n", clientSet.Time);
     fprintf(fp, "%s", str);
+    fclose(fp);
     return 0;
 }
 

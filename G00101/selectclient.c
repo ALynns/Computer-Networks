@@ -38,7 +38,20 @@ int clientConnect(opt option)
         client[i]->client_status = CS_NOSDANY;
         fcntl(client[i]->client_socket, F_SETFL, fcntl(client[i]->client_socket, F_GETFL, 0) | O_NONBLOCK);
         fdsetUpdate(&fds, client[i]->client_socket);
-        ret = connect(client[fds.fdMaxNum]->client_socket, (struct sockaddr *)&serviceAddr, sizeof(struct sockaddr_in));
+
+        struct sockaddr_in clientAddr;
+        memset(&clientAddr, 0, sizeof(clientAddr));
+        clientAddr.sin_family = AF_INET;
+        clientAddr.sin_port = htons(0);
+
+        ret = bind(client[i]->client_socket, (struct sockaddr *)&clientAddr, sizeof(clientAddr));
+        if (ret < 0)
+        {
+            printf("bind error\n");
+            exit(-1);
+        }
+
+        ret = connect(client[i]->client_socket, (struct sockaddr *)&serviceAddr, sizeof(struct sockaddr_in));
         if (ret == -1)
         {
             if (errno != EINPROGRESS) //
@@ -70,6 +83,13 @@ int clientConnect(opt option)
                 }
             }
         }
+    }
+    while(1)
+    {
+        dataRecv(&fds, client);
+        dataSend(&fds, client);
+        if (fds.fdNum == 0)
+            return 0;
     }
 }
 
@@ -214,6 +234,9 @@ int dataSend(fdset *fdst, client_info *clientSet[])
                 case CS_SDSTR_RECVNO:
                 {
                     clientSet[i]->str = (char *)malloc(clientSet[i]->strLength);
+                    int j;
+                    for(j=0;j<clientSet[i]->strLength;++j)
+                        clientSet[i]->str[j] = rand() % 256;
                     ret = send(clientSet[i]->client_socket, clientSet[i]->str, clientSet[i]->strLength, 0);
                     clientSet[i]->client_status=CS_SDSTR_RECVNO;
                     fdsetClose(fdst, clientSet, clientSet[i]->client_socket);
