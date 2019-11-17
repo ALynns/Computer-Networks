@@ -11,11 +11,17 @@
 #include <signal.h>
 #include <ifaddrs.h>
 #include <stddef.h>
+#include <sys/errno.h>
 
+#include "selectserver.h"
 #include "runningopt.h"
+#include "localBind.h"
 
 int main(int argc ,char *argv[])
 {
     opt option;
-    optSet(&option,argc,argv);//获取命令参数
+    optSet(&option, argc, argv, PT_SERVER); //获取命令参数
+    locanBind(&option);
+    serverConnect(option);
+    return 0;
 }

@@ -48,9 +48,10 @@ typedef struct client_info
     ClientStatus client_status;
     int StuNo;
     int pid;
-    char Time[19];
+    char Time[20];
     char *str;
     int strLength;
+    time_t startTime;
 } client_info;
 
 /*存储select所需的信息

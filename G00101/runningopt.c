@@ -18,7 +18,9 @@ int optSet(opt *option,int optc,char *optv[],ProcType procType)
             if((option->IPAddr=inet_addr(optv[++i]))==INADDR_NONE)
             {
                 if(option->Proc_Type==PT_SERVER)
+                {
                     option->IPAddr=inet_addr("0.0.0.0");
+                }    
                 --i;
             }    
             else

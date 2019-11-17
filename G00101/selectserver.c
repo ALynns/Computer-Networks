@@ -25,14 +25,20 @@ int serverConnect(opt option)
     client_info *client[MAXCONNECTIONNUM];
     fdset fds;
     fdsetReset(&fds);
-
+    
+    srand(time(0));
     while(1)
     {
+        getchar();
+        printf("start\n");
         dataSend(&fds, client);
         dataRecv(&fds, client);
+        getchar();
+        printf("mid\n");
         FD_ZERO(&serverfdsr);
         FD_SET(option.Socketfd, &serverfdsr);
-        ret = select(option.Socketfd + 1, &serverfdsr, NULL, NULL, 0);
+        struct timeval tv = {0, 0};
+        ret = select(option.Socketfd + 1, &serverfdsr, NULL, NULL, &tv);
         if (ret < 0 && errno != EINTR)
         {
             printf("select error\n");
@@ -46,7 +52,9 @@ int serverConnect(opt option)
 
         if (ret > 0)
         {
-            client[fds.fdMaxNum]=(client_info*)malloc(sizeof(client_info));
+            client[fds.fdMaxNum] = (client_info *)malloc(sizeof(client_info));
+            client[fds.fdMaxNum]->str = NULL;
+
             client[fds.fdMaxNum]->client_socket=accept(option.Socketfd, NULL, NULL);
             if (client[fds.fdMaxNum]->client_socket > 0)
             {
@@ -56,7 +64,8 @@ int serverConnect(opt option)
                 fdsetUpdate(&fds, client[fds.fdMaxNum]->client_socket);
             }
         }
-        
+        if (fds.fdMaxNum > 0 && fds.fdNum == 0)
+            return 0;
     }
 }
 
@@ -65,10 +74,13 @@ int dataRecv(fdset *fdst, client_info *clientSet[])
     if (fdst->fdMaxNum == 0)
         return 0;
     int i, ret;
+    
+    struct timeval tv = {0, 0};
     while(1)
     {
         fdsetZeroSet(fdst);
-        ret = select(fdst->maxfd + 1, &fdst->fdsr, NULL, NULL, 0);
+        
+        ret = select(fdst->maxfd + 1, &fdst->fdsr, NULL, NULL, &tv);
         if (ret < 0 && errno != EINTR)
         {
             printf("select error,%d\n", ret);
@@ -93,27 +105,97 @@ int dataRecv(fdset *fdst, client_info *clientSet[])
             {
                 case CS_SDSTUNO_RECVNO:
                 {
-                    ret = recv(clientSet[i]->client_socket, &clientSet[i]->StuNo, sizeof(int), 0);
+                    int temp = 0;
+                    clientSet[i]->startTime = time(0);
+                    while(1)
+                    {
+                        if (temp >= sizeof(int))
+                            break;
+                        ret = recv(clientSet[i]->client_socket, &clientSet[i]->StuNo + temp, sizeof(int) - temp, 0);
+                        if(ret>0)
+                            temp += ret;
+                        if (time(0) - clientSet[i]->startTime > 0)
+                        {
+                            fdsetClose(fdst, clientSet, clientSet[i]->client_socket);
+                            printf("Connection%d StuNo Error\n",i);
+                            break;
+                        }    
+                    }
                     clientSet[i]->client_status = CS_SDSTUNO_RECVSTUNO;
                     break;
                 }
                 case CS_SDPID_RECVNO:
                 {
-                    ret = recv(clientSet[i]->client_socket, &clientSet[i]->pid, sizeof(int), 0);
+                    int temp = 0;
+                    clientSet[i]->startTime = time(0);
+                    while(1)
+                    {
+                        if (temp >= sizeof(int))
+                            break;
+                        ret = recv(clientSet[i]->client_socket, &clientSet[i]->pid + temp, sizeof(int) - temp, 0);
+                        if (ret > 0)
+                            temp += ret;
+                        if (time(0) - clientSet[i]->startTime > 0)
+                        {
+                            fdsetClose(fdst, clientSet, clientSet[i]->client_socket);
+                            printf("Connection%d pid Error\n",i);
+                            break;
+                        }    
+                    }
                     clientSet[i]->client_status = CS_SDPID_RECVPID;
                     break;
                 }
                 case CS_SDTIME_RECVNO:
                 {
-                    ret = recv(clientSet[i]->client_socket, clientSet[i]->Time, 19, 0);
+                    int temp = 0;
+                    clientSet[i]->startTime = time(0);
+                    while(1)
+                    {
+                        if (temp >= 19)
+                            break;
+                        ret = recv(clientSet[i]->client_socket, clientSet[i]->Time + temp, 19 - temp, 0);
+                        if (ret > 0)
+                            temp += ret;
+                        if (time(0) - clientSet[i]->startTime > 0)
+                        {
+                            fdsetClose(fdst, clientSet, clientSet[i]->client_socket);
+                            printf("Connection%d TIME Error\n",i);
+                            break;
+                        }  
+                    }
                     clientSet[i]->client_status = CS_SDTIME_RECVTIME;
                     break;
                 }
                 case CS_SDSTR_RECVNO:
                 {
-                    clientSet[i]->str = (char *)malloc(clientSet[i]->strLength);
-                    ret = recv(clientSet[i]->client_socket, clientSet[i]->str, clientSet[i]->strLength, 0);
-                    clientSet[i]->client_status = CS_SDSTR_RECVSTR;
+                    if(clientSet[i]->str==NULL)
+                    {
+                        clientSet[i]->str = (char *)malloc(clientSet[i]->strLength + 1);
+                        clientSet[i]->str[clientSet[i]->strLength] = 0;
+                    }
+                    ret = 1;
+                    int temp = 0;
+                    clientSet[i]->startTime = time(0);
+                    while (1)
+                    {
+                        if (temp >= clientSet[i]->strLength)
+                            break;
+                        ret = recv(clientSet[i]->client_socket, clientSet[i]->str + temp, clientSet[i]->strLength - temp, 0);
+                        if (ret > 0)
+                            temp += ret;
+                        if (time(0) - clientSet[i]->startTime > 3)
+                        {
+                            printf("Connect %d overtime\n", i);
+                            temp = 0;
+                            clientSet[i]->startTime = time(0);
+                            break;
+                        }    
+                    }
+                    if(temp)
+                        clientSet[i]->client_status = CS_SDSTR_RECVSTR;
+                    else
+                        break;
+
                     dataFileWrite(*clientSet[i], clientSet[i]->str);
                     break;
                 }
@@ -130,10 +212,11 @@ int dataSend(fdset *fdst, client_info *clientSet[])
     if (fdst->fdMaxNum == 0)
         return 0;
     int ret, i;
+    struct timeval tv = {0, 0};
     while(1)
     {
         fdsetZeroSet(fdst);
-        ret = select(fdst->maxfd + 1, NULL, &fdst->fdsr, NULL, 0);
+        ret = select(fdst->maxfd + 1, NULL, &fdst->fdsr, NULL, &tv);
         if (ret < 0 && errno != EINTR)
         {
             printf("select error,%d\n", ret);
@@ -160,6 +243,7 @@ int dataSend(fdset *fdst, client_info *clientSet[])
         {
             switch (clientSet[i]->client_status)
             {
+                printf("%d\n", clientSet[i]->client_status);
                 case CS_NOSDANY:
                 {
                     ret = send(clientSet[i]->client_socket, "StuNo", 5, 0);
@@ -180,7 +264,6 @@ int dataSend(fdset *fdst, client_info *clientSet[])
                 }
                 case CS_SDTIME_RECVTIME:
                 {
-                    srand(time(0));
                     char buf[9];
                     strcat(buf,"str");
                     clientSet[i]->strLength = rand() % (99999 - 32768 + 1) + 32768;
@@ -193,7 +276,8 @@ int dataSend(fdset *fdst, client_info *clientSet[])
                 {
                     ret = send(clientSet[i]->client_socket, "end", 3, 0);
                     clientSet[i]->client_status=CS_SDSTR_RECVNO;
-                    free(clientSet[i]->str);
+                    if(clientSet[i]->str)
+                        free(clientSet[i]->str);
                     fdsetClose(fdst, clientSet, clientSet[i]->client_socket);
                     break;
                 } 
@@ -213,22 +297,21 @@ int dataSend(fdset *fdst, client_info *clientSet[])
 int dataFileWrite(client_info clientSet, char *str)
 {
     FILE *fp = NULL;
-    char fileName[20] = {0};
+    char fileName[50] = {0};
     strcat(fileName,"./txt/");
 
     sprintf(&fileName[strlen(fileName)], "%d", ntohl(clientSet.StuNo));
     strcat(fileName, ".");
 
-    sprintf(&fileName[strlen(fileName)], "%d", (unsigned int)(ntohl(clientSet.pid) << 16 + clientSet.client_socket));
+    sprintf(&fileName[strlen(fileName)], "%d", ntohl(clientSet.pid));
 
     strcat(fileName, ".pid.txt");
-    printf("%s\n",fileName);
     
     fp = fopen(fileName, "w+");
     fclose(fp);
     fp = fopen(fileName, "a");
     fprintf(fp, "%d\n", ntohl(clientSet.StuNo));
-    fprintf(fp, "%d\n", (ntohl(clientSet.pid) << 16 + clientSet.client_socket));
+    fprintf(fp, "%d\n", ntohl(clientSet.pid));
     fprintf(fp, "%s\n", clientSet.Time);
     fprintf(fp, "%s", str);
     fclose(fp);
@@ -284,7 +367,9 @@ int fdsetClose(fdset *fdst, client_info *clientSet[], int socketfd)
     {
         if(fdst->fds[i]==socketfd)
         {
-            free(clientSet[i]);
+            if(clientSet[i])
+                free(clientSet[i]);
+            clientSet[i] = NULL;
             fdst->fds[i] = -1;
         }
         else
