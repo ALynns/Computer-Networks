@@ -7,7 +7,7 @@
 
 int rangerand(int low,int hi);
 
-int myitoa(int n,char*s);
+char* myitoa(int n,char*s);
 
 void error_exit(char *name);
 
