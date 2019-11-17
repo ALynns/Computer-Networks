@@ -8,7 +8,7 @@ int savedialog(dialog *dia)
     int hStuNo=ntohl(dia->StuNo),hpid=ntohl(dia->pid);
 
     sprintf(path,"./txt/%d.%d.pid.txt",hStuNo,hpid);
-    printf("save dialog to %s\n",path);
+    //printf("save dialog to %s\n",path);
     FILE * fp=fopen(path,"w+");
     if (NULL==fp)
         perror("fopen");  

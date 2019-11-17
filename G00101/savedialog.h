@@ -2,7 +2,7 @@
 #define __SAVEDIALOG_H
 #include<stdio.h>
 #include<string.h>
-
+#include<stdint.h>
 #endif
 
 #ifndef __dialog_defined
@@ -11,7 +11,7 @@ typedef struct dialog
 //    char* toSend[4];
 
     int StuNo;
-    int pid;
+    uint32_t pid;
     int Randstr_len;
     char TIME[20];
     char Randstr[100000];
