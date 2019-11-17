@@ -49,6 +49,7 @@ typedef struct client_info
     int StuNo;
     int pid;
     char Time[19];
+    char *str;
     int strLength;
 } client_info;
 
@@ -84,4 +85,6 @@ int fdsetUpdate(fdset *fdst,int socketfd);
 
 //πÿ±’¡¨Ω”
 int fdsetClose(fdset *fdst, client_info *clientSet[], int socketfd);
+
+int getTime(char *time);
 

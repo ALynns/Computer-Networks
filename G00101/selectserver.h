@@ -49,6 +49,7 @@ typedef struct client_info
     int StuNo;
     int pid;
     char Time[19];
+    char *str;
     int strLength;
 } client_info;
 
