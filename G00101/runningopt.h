@@ -39,7 +39,7 @@ typedef enum BlockFuncType
 储存参数的结构体，内容包括：
     ProcType Proc_Type;当前程序的类型：服务端/客户端
     unsigned long IPAddr;无符号整形形式的IP地址
-    int Port;端口号
+    int Port;端口号(网络序)
     BlockType Block_Type;是否阻塞
     ForkType Fork_Type;是否分裂子进程方法连接
     BlockFuncType BlockFunc_Type;阻塞的函数

@@ -1,3 +1,4 @@
+
 targets=client test_compare clientBlockFork serverBlockFork clientPoll serverPoll
  
 objs=runningopt.o compare.o  savedialog.o tools.o serverbase.o mypoll.o
@@ -7,8 +8,8 @@ all:$(targets)
 
 .PHONY:all clean test
 
-$(objs):$(headFiles)
-$(targets):$(objs)
+$(objs) : $(headFiles)
+$(targets) : $(objs)
 
 $(objs):%.o:%.c
 	gcc -c $<

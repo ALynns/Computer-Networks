@@ -1,6 +1,10 @@
 {
     "files.associations": {
         "stdlib.h": "c",
-        "selectserver.h": "c"
+        "selectserver.h": "c",
+        "runningopt.h": "c",
+        "errno.h": "c",
+        "inet.h": "c",
+        "time.h": "c"
     }
 }
