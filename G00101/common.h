@@ -12,6 +12,8 @@
 #include <signal.h> 
 #include <time.h>
 #include <fcntl.h>
+#include<stdint.h>
 #endif
 
+#define WAIT_TIME_USEC 0
 
