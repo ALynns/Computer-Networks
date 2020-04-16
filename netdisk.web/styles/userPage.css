@@ -1,0 +1,102 @@
+html{
+	background-color: #90f000;
+}
+
+h1{
+	margin: 0 auto;
+	padding: 20px 0;
+	color: #00539F;
+	text-shadow: 3px 3px 1px write;
+}
+
+img{
+	display: block;
+	width: 900px;
+	margin: 0 auto;
+}
+
+body{
+	width: 900px;
+	margin: 0 auto;
+	background-color: #FF9500;
+	padding: 0 20px 20px 20px;
+	border: 5px solid black;
+}
+
+
+.container {
+    position: relative;
+    margin: 0 auto;
+    height: auto !important;
+    height: 100%; 
+    min-height: 100%;
+}
+
+.footer {
+    position: absolute; /*相对于父元素contanier定位*/
+    width: 100%;
+    bottom: 0;/*始终距离它的父元素的底部为0px.则是处于父元素的最底*/
+}
+
+.footer{
+    position:relative;
+    width:100%;
+    background-color: #333;
+    color:#eee;
+    text-align: center;
+    font-size: 16px;
+    height: 50px; 
+}
+
+.footer span{
+    line-height: 50px;
+    }
+
+
+form {
+    /* Just to center the form on the page */
+    margin: 0 auto;
+    width: 400px;
+    /* To see the outline of the form */
+    padding: 1em;
+    border: 1px solid #CCC;
+    border-radius: 1em;
+}
+
+form div + div {
+    margin-top: 1em;
+}
+
+label {
+    /* To make sure that all labels have the same size and are properly aligned */
+    display: inline-block;
+    width: 90px;
+    text-align: right;
+}
+
+#content{border: 1px solid saddlebrown;padding: 16px;border-radius: 2px}
+    .list {top: 15px;width: 140px;height: 40px; border:1px solid #0082E6; display:inline-block;border-radius: 2px;position: relative; line-height: 40px;}   
+    #file{position: absolute;opacity: 0;color:#000000;width: 100%;height: 100%;z-index: 100;}
+    .list span{
+        display: inline-block;
+        text-align: center;
+        width: 100%;
+        line-height: 40px;
+        position: absolute;
+        color: #000000;
+    }
+    video{
+        margin-top: 8px;
+        border-radius: 4px;
+    }    
+    ._p{
+        margin: 14px;
+    }
+    ._p input{
+        display: inline-block;
+        width: 70%;
+        margin-left: 6px;
+    }
+    ._p span{
+        font-size: 15px;
+    }

@@ -1,0 +1,54 @@
+html{
+	background-color: #90f000;
+}
+
+h1{
+	margin: 0 auto;
+	padding: 20px 0;
+	color: #00539F;
+	text-shadow: 3px 3px 1px black;
+}
+
+img{
+	display: block;
+	width: 900px;
+	margin: 0 auto;
+}
+
+body{
+	width: 900px;
+	margin: 0 auto;
+	background-color: #FF9500;
+	padding: 0 20px 20px 20px;
+	border: 5px solid black;
+}
+
+
+.container {
+    position: relative;
+    margin: 0 auto;
+    height: auto !important;
+    height: 100%; 
+    min-height: 100%;
+}
+
+.footer {
+    position: absolute; /*相对于父元素contanier定位*/
+    width: 100%;
+    bottom: 0;/*始终距离它的父元素的底部为0px.则是处于父元素的最底*/
+}
+
+.footer{
+    position:relative;
+    width:100%;
+    background-color: #333;
+    color:#eee;
+    text-align: center;
+    font-size: 16px;
+    height: 50px; 
+}
+
+.footer span{
+    line-height: 50px;
+    }
+    
